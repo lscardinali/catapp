@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct CatAppApp: App {
+struct CatApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -25,7 +25,7 @@ struct CatAppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppTabs()
         }
         .modelContainer(sharedModelContainer)
     }
