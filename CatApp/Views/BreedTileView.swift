@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CatTileView: View {
 
-    private let cat: Cat
+    private let cat: Breed
 
-    init(cat: Cat) {
+    init(cat: Breed) {
         self.cat = cat
     }
 
@@ -32,10 +32,13 @@ struct CatTileView: View {
 
             }
             Text(cat.name)
+                .foregroundStyle(.primary)
+                .lineLimit(1)
+
         }
     }
 }
 
 #Preview {
-    CatTileView(cat: Cat(id: 1, name: "Siamese"))
+    CatTileView(cat: Breed.mock())
 }

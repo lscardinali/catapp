@@ -8,6 +8,11 @@
 import Foundation
 
 struct Cat: Identifiable, Decodable, Equatable {
+
     let id: Int
     let name: String
+    let origin: String
+    let temperament: String
+    let description: String
+    let lifeSpan: String
 }
