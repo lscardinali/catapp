@@ -83,6 +83,7 @@
 				A09DCA5A2CB42CC500ACC7CE /* CatApp */,
 				A09DCA6D2CB42CC600ACC7CE /* CatAppTests */,
 				A09DCA772CB42CC600ACC7CE /* CatAppUITests */,
+				A09DCA9F2CB44FF500ACC7CE /* Frameworks */,
 				A09DCA592CB42CC500ACC7CE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -95,6 +96,13 @@
 				A09DCA742CB42CC600ACC7CE /* CatAppUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A09DCA9F2CB44FF500ACC7CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

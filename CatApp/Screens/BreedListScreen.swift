@@ -8,10 +8,9 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct CatListScreen: View {
-    @State private var breedTextSearch: String = ""
+struct BreedListScreen: View {
 
-    private let store: StoreOf<Breeds>
+    @Bindable private var store: StoreOf<Breeds>
 
     init(store: StoreOf<Breeds>) {
         self.store = store
@@ -19,23 +18,30 @@ struct CatListScreen: View {
 
     var body: some View {
         ScrollView {
-            WithViewStore(self.store, observe: { $0 }) { viewStore in
-                CatGridView(breeds: viewStore.breeds)
-                    .padding()
-                Button("Test") {
-                    viewStore.send(.fetchMoreBreeds)
+            BreedGridView(breeds: store.breeds, onTileAppear: { breed in
+                if breed.id == store.breeds.last?.id {
+                    store.send(.fetchMoreBreeds)
+                }
+            }).padding()
+
+                if store.breedsRequestInFlight {
+                    ProgressView()
                 }
 
             }
+        .onAppear {
+            store.send(.fetchMoreBreeds)
         }
-        .navigationTitle("Cats")
-        .searchable(text: $breedTextSearch, prompt: "Search By Breed")
-    }
+        .navigationTitle("Breeds")
+        .searchable(text: $store.breedFilterText.sending(\.filterTextChange), prompt: "Search By Breed")
+
+        }
+
 }
 
 #Preview {
     NavigationStack {
-        CatListScreen(store: Store(initialState: Breeds.State(), reducer: {
+        BreedListScreen(store: Store(initialState: Breeds.State(), reducer: {
             Breeds()
         }))
     }

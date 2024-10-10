@@ -6,20 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FavoriteScreen: View {
 
-    var cats: [Cat]
+    @Query private var favorites: [Breed]
+
 
     var body: some View {
 
         Group {
-            if cats.isEmpty {
+            if favorites.isEmpty {
                 Text("No breeds added to favorites")
                     .foregroundStyle(.secondary)
             } else {
                 ScrollView {
-                    CatGridView()
+                    BreedGridView(breeds: favorites, onTileAppear: nil)
                         .padding()
                 }
             }
@@ -30,12 +32,16 @@ struct FavoriteScreen: View {
 
 #Preview("Filled State") {
     NavigationStack {
-        FavoriteScreen(cats: [Cat(id: 1, name: "Siamese")])
+        FavoriteScreen()
+            .modelContainer(for: Breed.self, inMemory: true)
+
     }
 }
 
 #Preview("Empty State") {
     NavigationStack {
-        FavoriteScreen(cats: [])
+        FavoriteScreen()
+            .modelContainer(for: Breed.self, inMemory: true)
+
     }
 }

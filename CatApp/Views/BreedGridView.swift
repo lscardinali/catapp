@@ -7,9 +7,12 @@
 
 import SwiftUI
 
-struct CatGridView: View {
+struct BreedGridView: View {
 
     let breeds: [Breed]
+
+    let onTileAppear: ((Breed) -> Void)?
+
 
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
@@ -17,13 +20,17 @@ struct CatGridView: View {
                 NavigationLink {
                     BreedDetailScreen(breed: breed)
                 } label: {
-                    CatTileView(cat: breed)
+                    BreedTileView(breed: breed)
+                        .onAppear {
+                            onTileAppear?(breed)
+                        }
                 }
+                .buttonStyle(.plain)
             }
         }
     }
 }
 
 #Preview {
-    CatGridView(breeds: [Breed.mock()])
+    BreedGridView(breeds: [Breed.mock()], onTileAppear: nil)
 }

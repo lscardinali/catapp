@@ -7,38 +7,63 @@
 
 import SwiftUI
 
-struct CatTileView: View {
+struct BreedTileView: View {
 
-    private let cat: Breed
+    private let breed: Breed
 
-    init(cat: Breed) {
-        self.cat = cat
+    init(breed: Breed) {
+        self.breed = breed
+    }
+
+    @ViewBuilder
+    func placeholderImageView(size: CGSize = CGSize(width: 100, height: 50), foregroundColor: Color = .gray)
+        -> some View
+    {
+        ZStack {
+            Color.lightGray
+            Image(systemName: "cat")
+                .resizable()
+                .scaledToFit()
+                .padding(16)
+                .foregroundStyle(.white)
+        }
+        .frame(width: 100, height: 100)
+        .cornerRadius(10)
     }
 
     var body: some View {
         VStack {
             ZStack(alignment: .topTrailing) {
 
-                Image("cat")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .cornerRadius(10)
-                Button {
+                if let imageUrl = URL(string: breed.image ?? "") {
+                    AsyncImage(url: imageUrl) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 100, height: 100)
+                            .cornerRadius(10)
+                    } placeholder: {
+                        placeholderImageView()
+                    }
+                } else {
+                    placeholderImageView()
+                }
 
+                Button {
+                    
                 } label: {
-                    Image(systemName: "star")
+                    Image(systemName: breed.favorite ? "star.fill" : "star")
                 }
                 .padding(8)
 
             }
-            Text(cat.name)
+            Text(breed.name)
                 .foregroundStyle(.primary)
                 .lineLimit(1)
-
         }
     }
 }
 
 #Preview {
-    CatTileView(cat: Breed.mock())
+    BreedTileView(breed: Breed.mock())
 }

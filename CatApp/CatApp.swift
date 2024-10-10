@@ -5,14 +5,15 @@
 //  Created by Lucas Cardinali on 7/10/24.
 //
 
-import SwiftUI
+import ComposableArchitecture
 import SwiftData
+import SwiftUI
 
 @main
 struct CatApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Breed.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +26,9 @@ struct CatApp: App {
 
     var body: some Scene {
         WindowGroup {
-            AppTabs()
+            AppTabs(store: Store(initialState: Breeds.State()) {
+                Breeds()
+            })
         }
         .modelContainer(sharedModelContainer)
     }

@@ -6,12 +6,25 @@
 //
 
 import Testing
+import ComposableArchitecture
 @testable import CatApp
 
 struct CatAppTests {
 
     @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+
+        let store = TestStore(initialState: Breeds.State()) {
+            Breeds()
+        }
+
+
+        await store.send(.fetchMoreBreeds)
+        await store.receive(\.breedsResponse) {
+            $0.page = 1
+            $0.breeds.count > 0
+        }
+
+
     }
 
 }

@@ -8,9 +8,9 @@
 import SwiftUI
 import SwiftData
 
+/*
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+   // @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         NavigationSplitView {
@@ -59,3 +59,4 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Item.self, inMemory: true)
 }
+*/

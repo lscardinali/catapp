@@ -5,19 +5,29 @@
 //  Created by Lucas Cardinali on 7/10/24.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 struct AppTabs: View {
+
+    private var store: StoreOf<Breeds>
+
+    init(store: StoreOf<Breeds>) {
+
+        self.store = store
+    }
+
     var body: some View {
         TabView {
             Tab("Breeds", systemImage: "cat.fill") {
                 NavigationStack {
-                    CatListScreen()
+                    BreedListScreen(
+                        store: store)
                 }
             }
             Tab("Favorites", systemImage: "star") {
                 NavigationStack {
-                    FavoriteScreen(cats: [])
+                    FavoriteScreen()
                 }
             }
             .badge(2)
@@ -26,5 +36,7 @@ struct AppTabs: View {
 }
 
 #Preview {
-    AppTabs()
+    AppTabs(store: Store(initialState: Breeds.State()) {
+        Breeds()
+    })
 }
