@@ -10,32 +10,30 @@ import ComposableArchitecture
 
 struct BreedListScreen: View {
 
-    @Bindable private var store: StoreOf<Breeds>
-
-    init(store: StoreOf<Breeds>) {
-        self.store = store
-    }
+    @Bindable var store: StoreOf<Breeds>
 
     var body: some View {
-        ScrollView {
-            BreedGridView(breeds: store.breeds, onTileAppear: { breed in
-                if breed.id == store.breeds.last?.id {
-                    store.send(.fetchMoreBreeds)
-                }
-            }).padding()
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            ScrollView {
+                BreedGridView(store: store, showOnlyFavorites: false)
+                    .padding()
 
-                if store.breedsRequestInFlight {
+                if viewStore.breedsRequestInFlight {
                     ProgressView()
                 }
 
             }
-        .onAppear {
-            store.send(.fetchMoreBreeds)
-        }
-        .navigationTitle("Breeds")
-        .searchable(text: $store.breedFilterText.sending(\.filterTextChange), prompt: "Search By Breed")
+            .alert("Error when loading data", isPresented: viewStore.binding(get: { $0.hasError }, send: .dismissError)) {
+                Button("OK", role: .cancel) { }
+            }
+            .onAppear {
+                store.send(.fetchLocalBreeds)
+            }
+            .navigationTitle("Breeds")
+            .searchable(text: $store.breedFilterText.sending(\.filterTextChange), prompt: "Search By Breed")
 
         }
+    }
 
 }
 

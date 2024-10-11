@@ -10,27 +10,22 @@ import SwiftUI
 
 struct AppTabs: View {
 
-    private var store: StoreOf<Breeds>
-
-    init(store: StoreOf<Breeds>) {
-
-        self.store = store
-    }
+    @Bindable var store: StoreOf<Breeds>
 
     var body: some View {
+
         TabView {
             Tab("Breeds", systemImage: "cat.fill") {
                 NavigationStack {
-                    BreedListScreen(
-                        store: store)
+                    BreedListScreen(store: store)
                 }
             }
             Tab("Favorites", systemImage: "star") {
                 NavigationStack {
-                    FavoriteScreen()
+                    FavoriteScreen(store: store)
                 }
             }
-            .badge(2)
+            .badge(store.favoriteBreeds.count)
         }
     }
 }

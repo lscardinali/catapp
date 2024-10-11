@@ -6,21 +6,26 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct BreedTileView: View {
 
+    @Bindable var store: StoreOf<Breeds>
+
     private let breed: Breed
 
-    init(breed: Breed) {
+    let showLifeExpectancy: Bool
+
+    init(store: StoreOf<Breeds>, breed: Breed, showLifeExpectancy: Bool = false) {
+        self.store = store
         self.breed = breed
+        self.showLifeExpectancy = showLifeExpectancy
     }
 
     @ViewBuilder
-    func placeholderImageView(size: CGSize = CGSize(width: 100, height: 50), foregroundColor: Color = .gray)
-        -> some View
-    {
+    func placeholderImageView() -> some View {
         ZStack {
-            Color.lightGray
+            Color.placeholderForeground
             Image(systemName: "cat")
                 .resizable()
                 .scaledToFit()
@@ -33,8 +38,7 @@ struct BreedTileView: View {
 
     var body: some View {
         VStack {
-            ZStack(alignment: .topTrailing) {
-
+            ZStack(alignment: .trailing) {
                 if let imageUrl = URL(string: breed.image ?? "") {
                     AsyncImage(url: imageUrl) { image in
                         image
@@ -49,14 +53,26 @@ struct BreedTileView: View {
                     placeholderImageView()
                 }
 
-                Button {
-                    
-                } label: {
-                    Image(systemName: breed.favorite ? "star.fill" : "star")
+                VStack {
+                    Button {
+                        store.send(.toggleFavorite(breed))
+                    } label: {
+                        Image(systemName: breed.favorite ? "star.fill" : "star")
+                    }
+
+                    Spacer()
+
+                    if showLifeExpectancy,
+                       let lifeSpan = breed.lifeSpan?.split(separator: " - ").first {
+                        Text(lifeSpan)
+                            .bold()
+                    }
                 }
                 .padding(8)
 
             }
+            .frame(width: 100, height: 100)
+
             Text(breed.name)
                 .foregroundStyle(.primary)
                 .lineLimit(1)
@@ -64,6 +80,14 @@ struct BreedTileView: View {
     }
 }
 
-#Preview {
-    BreedTileView(breed: Breed.mock())
+#Preview("Default", traits: .sizeThatFitsLayout) {
+    BreedTileView(store: Store(initialState: Breeds.State(), reducer: {
+        Breeds()
+    }), breed: Breed.mock())
+}
+
+#Preview("With Life Expectancy", traits: .sizeThatFitsLayout) {
+    BreedTileView(store: Store(initialState: Breeds.State(), reducer: {
+        Breeds()
+    }), breed: Breed.mock(), showLifeExpectancy: true)
 }

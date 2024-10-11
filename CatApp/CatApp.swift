@@ -11,6 +11,7 @@ import SwiftUI
 
 @main
 struct CatApp: App {
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Breed.self
@@ -26,9 +27,16 @@ struct CatApp: App {
 
     var body: some Scene {
         WindowGroup {
-            AppTabs(store: Store(initialState: Breeds.State()) {
-                Breeds()
-            })
+            AppTabs(
+                store: Store(
+                    initialState: Breeds.State(),
+                    reducer: {
+                        Breeds()._printChanges()
+                    },
+                    withDependencies: { dependencies in
+                        dependencies.dataPersistenceService = DataPersistanceService.live(
+                            modelContext: sharedModelContainer.mainContext)
+                    }))
         }
         .modelContainer(sharedModelContainer)
     }

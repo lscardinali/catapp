@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct BreedDetailScreen: View {
 
-    private let breed: Breed
+    let breed: Breed
 
-    init(breed: Breed) {
-        self.breed = breed
-    }
+    @Bindable var store: StoreOf<Breeds>
 
     var body: some View {
         List {
@@ -50,8 +49,9 @@ struct BreedDetailScreen: View {
         }
         .toolbar {
             Button {
+                store.send(.toggleFavorite(breed))
             } label: {
-                Image(systemName: "star")
+                Image(systemName: breed.favorite ? "star.fill" : "star")
             }
         }
         .navigationTitle(breed.name)
@@ -60,6 +60,8 @@ struct BreedDetailScreen: View {
 
 #Preview {
     NavigationStack {
-        BreedDetailScreen(breed: Breed.mock())
+        BreedDetailScreen(breed: Breed.mock(), store: Store(initialState: Breeds.State(), reducer: {
+            Breeds()
+        }))
     }
 }

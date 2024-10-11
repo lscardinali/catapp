@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A09DCA972CB43DBB00ACC7CE /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = A09DCA962CB43DBB00ACC7CE /* ComposableArchitecture */; };
+		A09DCAA72CB8309D00ACC7CE /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = A09DCAA62CB8309800ACC7CE /* Readme.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 		A09DCA582CB42CC500ACC7CE /* CatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09DCA6A2CB42CC600ACC7CE /* CatAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09DCA742CB42CC600ACC7CE /* CatAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A09DCAA62CB8309800ACC7CE /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,6 +82,7 @@
 		A09DCA4F2CB42CC500ACC7CE = {
 			isa = PBXGroup;
 			children = (
+				A09DCAA62CB8309800ACC7CE /* Readme.md */,
 				A09DCA5A2CB42CC500ACC7CE /* CatApp */,
 				A09DCA6D2CB42CC600ACC7CE /* CatAppTests */,
 				A09DCA772CB42CC600ACC7CE /* CatAppUITests */,
@@ -119,6 +122,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A09DCAAA2CB8310B00ACC7CE /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A09DCA5A2CB42CC500ACC7CE /* CatApp */,
@@ -211,6 +215,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A09DCA952CB43B7B00ACC7CE /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				A09DCAA82CB830D300ACC7CE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A09DCA592CB42CC500ACC7CE /* Products */;
@@ -229,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A09DCAA72CB8309D00ACC7CE /* Readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +288,10 @@
 			isa = PBXTargetDependency;
 			target = A09DCA572CB42CC500ACC7CE /* CatApp */;
 			targetProxy = A09DCA752CB42CC600ACC7CE /* PBXContainerItemProxy */;
+		};
+		A09DCAAA2CB8310B00ACC7CE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = A09DCAA92CB8310B00ACC7CE /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -585,6 +595,14 @@
 				minimumVersion = 1.15.0;
 			};
 		};
+		A09DCAA82CB830D300ACC7CE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.57.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -592,6 +610,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A09DCA952CB43B7B00ACC7CE /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		A09DCAA92CB8310B00ACC7CE /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A09DCAA82CB830D300ACC7CE /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

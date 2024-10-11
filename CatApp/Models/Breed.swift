@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Breed: Identifiable, Decodable, Equatable, Sendable {
+final class Breed: Identifiable, Decodable, Equatable {
 
     init(
         id: String,
@@ -46,6 +46,10 @@ final class Breed: Identifiable, Decodable, Equatable, Sendable {
         }
     }
 
+    static func == (lhs: Breed, rhs: Breed) -> Bool {
+        lhs.id == rhs.id
+    }
+
     enum ImageCodingKeys: String, CodingKey {
         case url
     }
@@ -60,7 +64,7 @@ final class Breed: Identifiable, Decodable, Equatable, Sendable {
         case image
     }
 
-    var id: String
+    @Attribute(.unique) var id: String
     var name: String
     var origin: String?
     var temperament: String?
@@ -76,7 +80,7 @@ extension Breed {
     static func mock() -> Breed {
 
         Breed(
-            id: "1", name: "Abyssinian", origin: "Egypt",
+            id: UUID().uuidString, name: "Abyssinian", origin: "Egypt",
             temperament: "Active, Energetic, Independent, Intelligent, Gentle",
             description: "The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate",
             lifeSpan: "14 - 15",

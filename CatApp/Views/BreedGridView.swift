@@ -5,24 +5,31 @@
 //  Created by Lucas Cardinali on 7/10/24.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 struct BreedGridView: View {
 
-    let breeds: [Breed]
+    @Bindable var store: StoreOf<Breeds>
 
-    let onTileAppear: ((Breed) -> Void)?
+    let showOnlyFavorites: Bool
+    let showLifeExpectancy: Bool
 
+    init(store: StoreOf<Breeds>, showOnlyFavorites: Bool = false, showLifeExpectancy: Bool = false) {
+        self.store = store
+        self.showOnlyFavorites = showOnlyFavorites
+        self.showLifeExpectancy = showLifeExpectancy
+    }
 
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-            ForEach(breeds) { breed in
+            ForEach(showOnlyFavorites ? store.favoriteBreeds : store.breeds) { breed in
                 NavigationLink {
-                    BreedDetailScreen(breed: breed)
+                    BreedDetailScreen(breed: breed, store: store)
                 } label: {
-                    BreedTileView(breed: breed)
+                    BreedTileView(store: store, breed: breed, showLifeExpectancy: showLifeExpectancy)
                         .onAppear {
-                            onTileAppear?(breed)
+                            store.send(.displayedBreedCell(breed))
                         }
                 }
                 .buttonStyle(.plain)
@@ -32,5 +39,10 @@ struct BreedGridView: View {
 }
 
 #Preview {
-    BreedGridView(breeds: [Breed.mock()], onTileAppear: nil)
+    BreedGridView(
+        store: Store(
+            initialState: Breeds.State(),
+            reducer: {
+                Breeds()
+            }), showOnlyFavorites: false)
 }

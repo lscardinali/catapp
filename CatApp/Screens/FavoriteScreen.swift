@@ -5,43 +5,54 @@
 //  Created by Lucas Cardinali on 7/10/24.
 //
 
-import SwiftUI
+import ComposableArchitecture
 import SwiftData
+import SwiftUI
 
 struct FavoriteScreen: View {
 
-    @Query private var favorites: [Breed]
-
+    @Bindable var store: StoreOf<Breeds>
 
     var body: some View {
+        WithViewStore(store, observe: { $0 }) { viewStore in
 
-        Group {
-            if favorites.isEmpty {
-                Text("No breeds added to favorites")
-                    .foregroundStyle(.secondary)
-            } else {
-                ScrollView {
-                    BreedGridView(breeds: favorites, onTileAppear: nil)
-                        .padding()
+            Group {
+                if viewStore.favoriteBreeds.isEmpty {
+                    Text("No breeds added to favorites")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ScrollView {
+                        BreedGridView(store: store, showOnlyFavorites: true, showLifeExpectancy: true)
+                            .padding()
+                    }
                 }
             }
+            .navigationTitle("Favorites")
+
         }
-        .navigationTitle("Favorites")
     }
 }
 
 #Preview("Filled State") {
     NavigationStack {
-        FavoriteScreen()
-            .modelContainer(for: Breed.self, inMemory: true)
+        FavoriteScreen(
+            store: Store(
+                initialState: Breeds.State(),
+                reducer: {
+                    Breeds()
+                }))
 
     }
 }
 
 #Preview("Empty State") {
     NavigationStack {
-        FavoriteScreen()
-            .modelContainer(for: Breed.self, inMemory: true)
+        FavoriteScreen(
+            store: Store(
+                initialState: Breeds.State(),
+                reducer: {
+                    Breeds()
+                }))
 
     }
 }
