@@ -10,12 +10,9 @@ import XCTest
 final class CatAppUITests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
@@ -23,12 +20,48 @@ final class CatAppUITests: XCTestCase {
     }
 
     @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    func testLoadInitialData() throws {
+
         let app = XCUIApplication()
+        app.launchArguments += ["--uitesting"]
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        XCTAssertTrue(app.scrollViews["BreedList"].exists)
+
+        app.staticTexts["BreedTileName"].waitForExistence(timeout: 10)
+
+        let favoriteTab = app.buttons["FavoritesTab"]
+        let breedsTab = app.buttons["BreedsTab"]
+
+        favoriteTab.tap()
+
+        let noFavoritesText = app.staticTexts["noFavoritesText"]
+        XCTAssertTrue(noFavoritesText.exists)
+
+        breedsTab.tap()
+
+        let favoriteButtons = app.buttons["FavoriteButton"]
+        XCTAssertTrue(favoriteButtons.exists)
+        favoriteButtons.firstMatch.tap()
+
+        favoriteTab.tap()
+
+        XCTAssertFalse(noFavoritesText.exists)
+
+        breedsTab.tap()
+
+        let searchField = app.searchFields.firstMatch
+
+        searchField.tap()
+        searchField.typeText("aegean")
+
+        let tiles = app.staticTexts.matching(identifier: "BreedTileName")
+        XCTAssertEqual(tiles.count, 1)
+
+        tiles.firstMatch.tap()
+
+        XCTAssertTrue(app.images["BreedDetailImage"].exists)
+
     }
 
     @MainActor

@@ -11,25 +11,35 @@ import SwiftUI
 
 struct FavoriteScreen: View {
 
+    struct AccessibilityIdentifiers {
+        static let noFavoritesText = "noFavoritesText"
+    }
+
+    let noFavoritesLabel = "No breeds added to favorites"
+    let navigationTitle = "Favorites"
+
     @Bindable var store: StoreOf<Breeds>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
+        WithViewStore(
+            store, observe: { $0 },
+            content: { viewStore in
 
-            Group {
-                if viewStore.favoriteBreeds.isEmpty {
-                    Text("No breeds added to favorites")
-                        .foregroundStyle(.secondary)
-                } else {
-                    ScrollView {
-                        BreedGridView(store: store, showOnlyFavorites: true, showLifeExpectancy: true)
-                            .padding()
+                Group {
+                    if viewStore.favoriteBreeds.isEmpty {
+                        Text(noFavoritesLabel)
+                            .foregroundStyle(.secondary)
+                            .accessibilityIdentifier(AccessibilityIdentifiers.noFavoritesText)
+                    } else {
+                        ScrollView {
+                            BreedGridView(store: store, showOnlyFavorites: true, showLifeExpectancy: true)
+                                .padding()
+                        }
                     }
                 }
-            }
-            .navigationTitle("Favorites")
+                .navigationTitle(navigationTitle)
 
-        }
+            })
     }
 }
 
@@ -37,7 +47,11 @@ struct FavoriteScreen: View {
     NavigationStack {
         FavoriteScreen(
             store: Store(
-                initialState: Breeds.State(),
+                initialState: Breeds.State(
+                    breeds: [
+                        Breed(id: "a", name: "Siamese", favorite: true)
+                    ]
+                ),
                 reducer: {
                     Breeds()
                 }))

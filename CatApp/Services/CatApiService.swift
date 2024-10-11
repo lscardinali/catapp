@@ -36,7 +36,7 @@ enum CatApiEndpoints {
     // Configurable Query items
     private var queryItems: [URLQueryItem] {
         switch self {
-        case .breeds(page: let page, limit: let limit):
+        case .breeds(let page, let limit):
             return [
                 URLQueryItem(name: "page", value: String(page)),
                 URLQueryItem(name: "limit", value: String(limit))
@@ -55,15 +55,15 @@ struct CatApiClient {
 
 private enum CatApiClientKey: DependencyKey {
 
-    static let testValue = CatApiClient(
+    static let testValue: CatApiClient = CatApiClient(
         breeds: { _, _ in
-            return [Breed.mock(), Breed.mock(), Breed.mock()]
+            return [Breed.mock(), Breed.mock(), Breed(id: "c", name: "Siamese", favorite: true)]
         }
     )
 
     static let previewValue: CatApiClient = CatApiClient(
         breeds: { _, _ in
-            return [Breed.mock(), Breed.mock(), Breed.mock()]
+            return [Breed.mock(), Breed.mock(), Breed(id: "c", name: "Siamese", favorite: true)]
         }
     )
 

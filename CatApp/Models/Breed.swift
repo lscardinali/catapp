@@ -18,7 +18,8 @@ final class Breed: Identifiable, Decodable, Equatable {
         temperament: String? = nil,
         description: String? = nil,
         lifeSpan: String? = nil,
-        image: String? = nil
+        image: String? = nil,
+        favorite: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -27,6 +28,7 @@ final class Breed: Identifiable, Decodable, Equatable {
         self.desc = description
         self.lifeSpan = lifeSpan
         self.image = image
+        self.favorite = favorite
     }
 
     required init(from decoder: any Decoder) throws {

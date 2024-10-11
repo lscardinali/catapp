@@ -17,7 +17,7 @@ struct CatAppTests {
     let firstResponse = (0...3).map { _ in Breed.mock() }
     let secondResponse = (0...3).map { _ in Breed.mock() }
 
-    let filterResponse = [ Breed.mock(), Breed.mock(), Breed(id: "abc", name: "Siamese")]
+    let filterResponse = [Breed.mock(), Breed.mock(), Breed(id: "abc", name: "Siamese")]
 
     let sut: TestStoreOf<Breeds>
     let testModelContainer: ModelContainer
@@ -74,7 +74,6 @@ struct CatAppTests {
         }
 
         await self.sut.receive(\.breedsResponse.success) {
-            $0.page = 2
             $0.breedsRequestInFlight = false
             $0.hasMoreBreedsToLoad = false
         }
@@ -169,7 +168,6 @@ struct CatAppTests {
         let savedBreeds = try self.sut.dependencies.dataPersistenceService.loadBreeds()
 
         #expect(savedBreeds.count == firstResponse.count)
-
 
     }
 

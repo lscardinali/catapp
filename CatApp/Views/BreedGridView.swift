@@ -23,7 +23,10 @@ struct BreedGridView: View {
 
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-            ForEach(showOnlyFavorites ? store.favoriteBreeds : store.breeds) { breed in
+            ForEach(
+                showOnlyFavorites
+                    ? store.favoriteBreeds : (store.breedFilterText.isEmpty ? store.breeds : store.filteredBreeds)
+            ) { breed in
                 NavigationLink {
                     BreedDetailScreen(breed: breed, store: store)
                 } label: {
@@ -41,7 +44,9 @@ struct BreedGridView: View {
 #Preview {
     BreedGridView(
         store: Store(
-            initialState: Breeds.State(),
+            initialState: Breeds.State(
+                breeds: [Breed.mock()]
+            ),
             reducer: {
                 Breeds()
             }), showOnlyFavorites: false)

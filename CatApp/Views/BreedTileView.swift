@@ -5,10 +5,20 @@
 //  Created by Lucas Cardinali on 7/10/24.
 //
 
-import SwiftUI
 import ComposableArchitecture
+import SwiftUI
 
 struct BreedTileView: View {
+
+    struct AccessibilityIdentifiers {
+        static let favoriteButton = "FavoriteButton"
+        static let breedTileName = "BreedTileName"
+    }
+
+    let favoriteImage = "star.fill"
+    let unfavoriteImage = "star"
+
+    let lifeSpanSeparator = " - "
 
     @Bindable var store: StoreOf<Breeds>
 
@@ -22,20 +32,6 @@ struct BreedTileView: View {
         self.showLifeExpectancy = showLifeExpectancy
     }
 
-    @ViewBuilder
-    func placeholderImageView() -> some View {
-        ZStack {
-            Color.placeholderForeground
-            Image(systemName: "cat")
-                .resizable()
-                .scaledToFit()
-                .padding(16)
-                .foregroundStyle(.white)
-        }
-        .frame(width: 100, height: 100)
-        .cornerRadius(10)
-    }
-
     var body: some View {
         VStack {
             ZStack(alignment: .trailing) {
@@ -47,23 +43,24 @@ struct BreedTileView: View {
                             .frame(width: 100, height: 100)
                             .cornerRadius(10)
                     } placeholder: {
-                        placeholderImageView()
+                        BreedPlaceholderView()
                     }
                 } else {
-                    placeholderImageView()
+                    BreedPlaceholderView()
                 }
 
                 VStack {
                     Button {
                         store.send(.toggleFavorite(breed))
                     } label: {
-                        Image(systemName: breed.favorite ? "star.fill" : "star")
+                        Image(systemName: breed.favorite ? favoriteImage : unfavoriteImage)
                     }
+                    .accessibilityIdentifier(AccessibilityIdentifiers.favoriteButton)
 
                     Spacer()
 
                     if showLifeExpectancy,
-                       let lifeSpan = breed.lifeSpan?.split(separator: " - ").first {
+                        let lifeSpan = breed.lifeSpan?.split(separator: lifeSpanSeparator).first {
                         Text(lifeSpan)
                             .bold()
                     }
@@ -76,18 +73,25 @@ struct BreedTileView: View {
             Text(breed.name)
                 .foregroundStyle(.primary)
                 .lineLimit(1)
+                .accessibilityIdentifier(AccessibilityIdentifiers.breedTileName)
         }
     }
 }
 
 #Preview("Default", traits: .sizeThatFitsLayout) {
-    BreedTileView(store: Store(initialState: Breeds.State(), reducer: {
-        Breeds()
-    }), breed: Breed.mock())
+    BreedTileView(
+        store: Store(
+            initialState: Breeds.State(),
+            reducer: {
+                Breeds()
+            }), breed: Breed.mock())
 }
 
 #Preview("With Life Expectancy", traits: .sizeThatFitsLayout) {
-    BreedTileView(store: Store(initialState: Breeds.State(), reducer: {
-        Breeds()
-    }), breed: Breed.mock(), showLifeExpectancy: true)
+    BreedTileView(
+        store: Store(
+            initialState: Breeds.State(),
+            reducer: {
+                Breeds()
+            }), breed: Breed.mock(), showLifeExpectancy: true)
 }
